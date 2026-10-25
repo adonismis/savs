@@ -98,3 +98,58 @@ dialog{border:0;color:var(--ink);padding:28px;max-height:90svh;box-shadow:0 24px
 @media(max-width:1023px){.award-slide{height:320px;min-height:0}}
 @media(max-width:767px){.award-slide{height:auto;min-height:0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* Activity albums: simple four-column covers and centered titles, inspired by TCVS. */
+.activities-section{background:#fff;border-bottom:1px solid var(--line);padding-block:64px 56px}
+.activities-section .section-heading{margin-bottom:26px}
+.activity-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:25px 28px}
+.activity-card{display:flex;flex-direction:column;align-items:stretch;min-width:0;padding:0;overflow:hidden;border:1px solid #dfe3e5;border-radius:3px;background:#fff;text-align:center;transition:border-color .2s,box-shadow .2s}
+.activity-card>img{width:100%;aspect-ratio:1.45;object-fit:cover}
+.activity-title{display:flex;align-items:flex-start;justify-content:center;flex:1;padding:12px 12px 17px;min-height:76px;font-size:16px;line-height:1.65;font-weight:400;overflow-wrap:anywhere}
+.activity-card:hover{border-color:#9eb4bd;box-shadow:0 3px 12px #143d5012;color:var(--teal)}
+.activities-note{font-size:11px;color:var(--muted);margin-top:20px;line-height:1.8}
+.album-dialog{width:min(1000px,calc(100% - 32px));padding:24px 28px}
+.album-dialog .dialog-header{margin-bottom:8px;align-items:flex-start}
+.album-dialog .eyebrow{font-size:10px;margin-bottom:7px}
+.album-dialog h2{font-size:23px;letter-spacing:.03em}
+#album-description{font-size:12px;color:var(--muted);margin-bottom:16px}
+.album-stage{position:relative;background:#102f40;display:flex;align-items:center;justify-content:center;height:min(49svh,530px)}
+.album-stage>img{width:100%;height:100%;object-fit:contain}
+.album-stage>img[hidden]{display:none}
+.album-image-error{color:#fff;padding:20px;font-size:13px}
+.album-navigation{display:flex;align-items:center;gap:16px;margin-top:13px}
+.album-navigation button{border:1px solid var(--line);width:38px;height:38px;flex-shrink:0;font-size:20px}
+.album-navigation button:hover{background:var(--paper)}
+.album-navigation button:disabled{opacity:.35;cursor:default}
+#album-caption{font-size:12px;flex:1}
+#album-counter{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.album-thumbnails{display:flex;gap:10px;overflow-x:auto;padding:6px 3px;margin-top:13px}
+.album-thumbnails button{padding:2px;border:2px solid transparent;flex:0 0 76px;opacity:.55}
+.album-thumbnails button[aria-pressed="true"]{border-color:var(--teal);opacity:1}
+.album-thumbnails button img{width:100%;height:48px;object-fit:cover}
+@media(max-width:1023px){.activity-grid{gap:20px}.activity-title{font-size:14px;min-height:73px}}
+@media(max-width:767px){.activities-section{padding-block:44px 38px}.activity-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}.activity-title{font-size:14px;padding:10px 8px 13px;min-height:70px}.album-dialog{padding:17px;width:calc(100% - 20px)}.album-dialog h2{font-size:19px}.album-stage{height:36svh}.album-navigation{gap:10px}.album-navigation button{width:32px;height:34px}#album-caption{font-size:11px}#album-counter{font-size:11px}.album-thumbnails button{flex-basis:64px}.album-thumbnails button img{height:40px}}
+@media(max-width:479px){.activity-grid{grid-template-columns:1fr;gap:20px}.activity-title{font-size:16px;min-height:0;padding:12px 14px 17px}}
+
+/* All teaching units share a touch-friendly, manually controlled carousel. */
+.department-grid{--department-visible:4;display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#9ab0b7 transparent;padding:5px 3px 14px;scroll-padding-inline:3px}
+.department-grid>.department-card{flex:0 0 calc((100% - 72px)/4);min-width:0;scroll-snap-align:start}
+.department-grid .department-image img{aspect-ratio:1.45}
+.department-grid .department-copy{align-items:flex-start;min-height:110px;padding-top:18px}
+.department-grid .department-copy>span:first-child{min-width:0}
+.department-grid .department-copy small{display:block;font-size:8px;min-height:14px;letter-spacing:.08em}
+.department-grid .department-copy h3{font-size:23px;line-height:1.5;letter-spacing:.04em}
+.department-subtitle{display:block;font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0;margin-top:3px}
+.department-grid .circle-arrow{margin-top:20px}
+.department-demo{position:absolute;right:10px;bottom:10px;background:#102f40d9;padding:3px 7px;font-size:9px;color:#fff;letter-spacing:.05em}
+.department-toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:18px}
+.department-toolbar[hidden]{display:none}
+.department-toolbar>p{font-size:11px;color:var(--muted)}
+#department-range{margin-left:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.department-controls{display:flex;align-items:center;gap:18px}
+.department-controls button{width:38px;height:38px;border:1px solid #bdcdd1;border-radius:50%;display:grid;place-items:center}
+.department-controls button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+#department-prev .icon{transform:rotate(180deg)}
+.department-page{font-family:Georgia,serif;font-size:13px;color:var(--muted);min-width:36px;text-align:center}
+@media(min-width:768px) and (max-width:1023px){.department-grid{--department-visible:2}.department-grid>.department-card{flex-basis:calc((100% - 24px)/2)}}
+@media(max-width:767px){.department-grid{--department-visible:1;gap:18px}.department-grid>.department-card{flex-basis:100%}.department-grid .department-copy{min-height:106px}.department-grid .department-copy h3{font-size:24px}.department-grid .department-copy small{font-size:9px}.department-toolbar{margin-top:13px;gap:8px}.department-toolbar>p{font-size:10px}#department-range{display:block;margin:4px 0 0}.department-controls{gap:13px}.department-controls button{width:36px;height:36px}}

@@ -283,6 +283,47 @@
   syncAwardPause();
   updateAwardTimer();
 
+  // Teaching-unit carousel: no automatic movement; native touch/trackpad scrolling.
+  const departmentTrack = $('#department-track');
+  const departmentCards = $$('.department-card', departmentTrack);
+  let departmentVisible = 4;
+  let departmentFirst = 0;
+  let departmentScrollTimer;
+  function departmentStep() {
+    return departmentCards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(departmentTrack).gap);
+  }
+  function syncDepartments() {
+    departmentVisible = Number(getComputedStyle(departmentTrack).getPropertyValue('--department-visible')) || 1;
+    departmentFirst = Math.max(0, Math.min(departmentCards.length - departmentVisible, Math.round(departmentTrack.scrollLeft / departmentStep())));
+    const firstLabel = String(departmentFirst + 1).padStart(2, '0');
+    const lastLabel = String(Math.min(departmentFirst + departmentVisible, departmentCards.length)).padStart(2, '0');
+    $('#department-range').textContent = `${departmentVisible === 1 ? firstLabel : `${firstLabel}–${lastLabel}`} / ${departmentCards.length}`;
+    $('#department-page').textContent = `${Math.floor(departmentFirst / departmentVisible) + 1} / ${Math.ceil(departmentCards.length / departmentVisible)}`;
+  }
+  function moveDepartments(direction) {
+    syncDepartments();
+    const last = Math.max(0, departmentCards.length - departmentVisible);
+    const next = direction > 0
+      ? (departmentFirst >= last ? 0 : Math.min(last, departmentFirst + departmentVisible))
+      : (departmentFirst <= 0 ? last : Math.max(0, departmentFirst - departmentVisible));
+    departmentTrack.scrollTo({left: next * departmentStep(), behavior: reducedMotion.matches ? 'instant' : 'smooth'});
+  }
+  $('#department-prev').addEventListener('click', () => moveDepartments(-1));
+  $('#department-next').addEventListener('click', () => moveDepartments(1));
+  departmentTrack.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    departmentTrack.focus({preventScroll:true});
+    moveDepartments(event.key === 'ArrowRight' ? 1 : -1);
+  });
+  departmentTrack.addEventListener('scroll', () => {
+    clearTimeout(departmentScrollTimer);
+    departmentScrollTimer = setTimeout(syncDepartments, 100);
+  }, {passive:true});
+  new ResizeObserver(syncDepartments).observe(departmentTrack);
+  $('#department-toolbar').hidden = false;
+  syncDepartments();
+
   // Native dialogs supply focus trapping, Escape handling and focus restoration.
   const searchDialog = $('#search-dialog');
   const imageDialog = $('#image-dialog');
@@ -326,6 +367,64 @@
     $('#video-player').replaceChildren(player);
     openDialog(videoDialog);
   }));
+
+  // Activity albums: compact cover-and-title grid with a keyboard photo viewer.
+  const albums = (window.SAVS_ALBUMS || []).filter(album => album.photos?.length);
+  const albumDialog = $('#album-dialog');
+  const albumImage = $('#album-image');
+  let activeAlbum;
+  let activePhoto = 0;
+  function showAlbumPhoto(index) {
+    activePhoto = (index + activeAlbum.photos.length) % activeAlbum.photos.length;
+    const photo = activeAlbum.photos[activePhoto];
+    $('#album-image-error').hidden = true;
+    albumImage.hidden = false;
+    albumImage.src = photo.src;
+    albumImage.alt = photo.caption;
+    $('#album-caption').textContent = photo.caption;
+    $('#album-counter').textContent = `${activePhoto + 1} / ${activeAlbum.photos.length}`;
+    $$('#album-thumbnails button').forEach((button, i) => button.setAttribute('aria-pressed', String(i === activePhoto)));
+  }
+  albumImage.addEventListener('error', () => { albumImage.hidden = true; $('#album-image-error').hidden = false; });
+  function openAlbum(album) {
+    activeAlbum = album;
+    $('#album-category').textContent = `${album.category} · ${album.demo ? '示意相簿' : (album.date || '活動紀錄')}`;
+    $('#album-title').textContent = album.title;
+    $('#album-description').textContent = album.description;
+    $('#album-thumbnails').replaceChildren(...album.photos.map((photo, index) => {
+      const button = document.createElement('button');
+      button.setAttribute('aria-label', `第 ${index + 1} 張：${photo.caption}`);
+      const img = document.createElement('img');
+      img.src = photo.src; img.alt = ''; img.loading = 'lazy';
+      button.append(img);
+      button.addEventListener('click', () => showAlbumPhoto(index));
+      return button;
+    }));
+    $('#album-prev').disabled = $('#album-next').disabled = album.photos.length < 2;
+    showAlbumPhoto(0);
+    openDialog(albumDialog);
+  }
+  $('#album-prev').addEventListener('click', () => showAlbumPhoto(activePhoto - 1));
+  $('#album-next').addEventListener('click', () => showAlbumPhoto(activePhoto + 1));
+  albumDialog.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    showAlbumPhoto(activePhoto + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  $('#activity-grid').replaceChildren(...albums.map(album => {
+    const card = document.createElement('button');
+    card.className = 'activity-card';
+    card.setAttribute('aria-haspopup', 'dialog');
+    card.setAttribute('aria-label', `開啟相簿：${album.title}${album.demo ? '，示意相簿' : ''}`);
+    const img = document.createElement('img');
+    img.src = album.photos[0].src;
+    img.alt = album.photos[0].caption;
+    img.loading = 'lazy'; img.width = 1000; img.height = 667;
+    card.append(img, textElement('span', 'activity-title', album.title));
+    card.addEventListener('click', () => openAlbum(album));
+    return card;
+  }));
+  if (!albums.length) $('#activity-grid').append(textElement('p', 'search-empty', '精彩活動陸續整理中，敬請期待。'));
 
   // Search is intentionally local and never submits visitors' queries externally.
   const searchItems = [
