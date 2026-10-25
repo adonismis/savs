@@ -201,7 +201,7 @@
   }
   function updateTimer() {
     clearInterval(timer);
-    if (!paused && !hoverPause && heroVisible && !document.hidden && !hero.contains(document.activeElement)) {
+    if (!paused && !hoverPause && heroVisible && !document.hidden && !hero.contains(document.activeElement) && !$('dialog[open]')) {
       timer = setInterval(() => showSlide(currentSlide + 1), 7000);
     }
   }
@@ -232,13 +232,75 @@
   syncPauseButton();
   updateTimer();
 
+  // Keep achievement posters intact, with independent and pausable rotation.
+  const awards = $('.awards-carousel');
+  const awardSlides = $$('.award-slide');
+  const awardPicks = $$('[data-award]');
+  const awardPause = $('#award-pause');
+  let currentAward = 0;
+  let awardsPaused = reducedMotion.matches;
+  let awardsHovered = false;
+  let awardsVisible = true;
+  let awardTimer;
+  function showAward(index, announce = false) {
+    currentAward = (index + awardSlides.length) % awardSlides.length;
+    awardSlides.forEach((slide, i) => { slide.hidden = i !== currentAward; });
+    awardPicks.forEach((pick, i) => pick.setAttribute('aria-current', String(i === currentAward)));
+    $('#award-number').textContent = String(currentAward + 1).padStart(2, '0');
+    if (announce) $('#award-status').textContent = `${awardSlides[currentAward].getAttribute('aria-label')}，${$('.award-story>p', awardSlides[currentAward]).textContent}`;
+  }
+  function updateAwardTimer() {
+    clearInterval(awardTimer);
+    if (!awardsPaused && !awardsHovered && awardsVisible && !document.hidden && !awards.contains(document.activeElement) && !$('dialog[open]')) {
+      awardTimer = setInterval(() => showAward(currentAward + 1), 8000);
+    }
+  }
+  function manualAward(index) { showAward(index, true); updateAwardTimer(); }
+  function syncAwardPause() {
+    awardPause.setAttribute('aria-pressed', String(awardsPaused));
+    awardPause.setAttribute('aria-label', awardsPaused ? '播放競賽輪播' : '暫停競賽輪播');
+  }
+  awardPicks.forEach(pick => pick.addEventListener('click', () => manualAward(Number(pick.dataset.award))));
+  $('#award-prev').addEventListener('click', () => manualAward(currentAward - 1));
+  $('#award-next').addEventListener('click', () => manualAward(currentAward + 1));
+  awardPause.addEventListener('click', () => { awardsPaused = !awardsPaused; syncAwardPause(); updateAwardTimer(); });
+  awards.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { awardsHovered = true; updateAwardTimer(); } });
+  awards.addEventListener('pointerleave', () => { awardsHovered = false; updateAwardTimer(); });
+  awards.addEventListener('focusin', updateAwardTimer);
+  awards.addEventListener('focusout', () => setTimeout(updateAwardTimer, 0));
+  awards.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    // Keep focus on a persistent control before hiding a focused poster.
+    if (event.target.closest('.award-slide')) awards.focus();
+    manualAward(currentAward + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  document.addEventListener('visibilitychange', updateAwardTimer);
+  reducedMotion.addEventListener('change', () => { awardsPaused = reducedMotion.matches; syncAwardPause(); updateAwardTimer(); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => { awardsVisible = entry.isIntersecting; updateAwardTimer(); }, {threshold: .1}).observe(awards);
+  }
+  syncAwardPause();
+  updateAwardTimer();
+
   // Native dialogs supply focus trapping, Escape handling and focus restoration.
   const searchDialog = $('#search-dialog');
   const imageDialog = $('#image-dialog');
-  function openDialog(dialog) { dialog.showModal(); document.body.classList.add('modal-open'); }
+  const videoDialog = $('#video-dialog');
+  function openDialog(dialog) {
+    dialog.showModal();
+    document.body.classList.add('modal-open');
+    updateTimer();
+    updateAwardTimer();
+  }
   $$('dialog').forEach(dialog => {
     $('.dialog-close', dialog).addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => document.body.classList.remove('modal-open'));
+    dialog.addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      if (dialog === videoDialog) $('#video-player').replaceChildren();
+      updateTimer();
+      updateAwardTimer();
+    });
     dialog.addEventListener('click', event => {
       const bounds = dialog.getBoundingClientRect();
       if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
@@ -249,6 +311,20 @@
     $('#dialog-image').alt = button.dataset.posterTitle;
     $('#image-caption').textContent = button.dataset.posterTitle;
     openDialog(imageDialog);
+  }));
+  $$('[data-video]').forEach(button => button.addEventListener('click', () => {
+    const videoId = button.dataset.video;
+    if (!/^[\w-]{11}$/.test(videoId)) return;
+    $('#video-caption').textContent = button.dataset.videoTitle;
+    $('#video-fallback').href = `https://www.youtube.com/watch?v=${videoId}`;
+    const player = document.createElement('iframe');
+    player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+    player.title = button.dataset.videoTitle;
+    player.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    player.allowFullscreen = true;
+    player.referrerPolicy = 'strict-origin-when-cross-origin';
+    $('#video-player').replaceChildren(player);
+    openDialog(videoDialog);
   }));
 
   // Search is intentionally local and never submits visitors' queries externally.
