@@ -224,6 +224,35 @@
   }));
   renderServiceDirectory();
 
+  // Persistent shortcuts stay compact on phones and use ordinary navigation links.
+  const floatingQuick = $('.floating-quick');
+  const floatingToggle = $('#floating-toggle');
+  function closeFloatingQuick(returnFocus = false) {
+    floatingQuick.classList.remove('is-open');
+    floatingToggle.setAttribute('aria-expanded', 'false');
+    if (returnFocus) floatingToggle.focus();
+  }
+  floatingToggle.addEventListener('click', () => {
+    const open = !floatingQuick.classList.contains('is-open');
+    floatingQuick.classList.toggle('is-open', open);
+    floatingToggle.setAttribute('aria-expanded', String(open));
+  });
+  $$('.floating-links a').forEach(link => link.addEventListener('click', () => {
+    closeFloatingQuick();
+    if (link.hasAttribute('data-services-all')) {
+      serviceCategory = 'all'; serviceQuery = ''; serviceInput.value = ''; renderServiceDirectory();
+      // Move keyboard focus out of the collapsed mobile menu to its destination.
+      $('#services-title').setAttribute('tabindex', '-1');
+      requestAnimationFrame(() => $('#services-title').focus({preventScroll:true}));
+    } else if (matchMedia('(max-width:767px)').matches) floatingToggle.focus();
+  }));
+  document.addEventListener('click', event => {
+    if (!floatingQuick.contains(event.target)) closeFloatingQuick();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !event.defaultPrevented && floatingQuick.classList.contains('is-open')) closeFloatingQuick(true);
+  });
+
   const hero = $('.hero');
   const photos = $$('.hero-photo');
   const dots = $$('.slide-dots button');

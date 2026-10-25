@@ -228,3 +228,17 @@ dialog{border:0;color:var(--ink);padding:28px;max-height:90svh;box-shadow:0 24px
 .award-picks.award-thumbnails button:hover{border-color:#a8b8b8}
 .awards-footnote>p{font-size:11px;color:var(--muted);line-height:1.9}
 @media(max-width:767px){.awards-toolbar{display:flex;flex-direction:column;align-items:stretch;gap:14px;padding:16px 18px}.award-selector{gap:10px}.award-selector>span{font-size:10px}.award-selector select{width:100%;font-size:11px;flex:1;padding:9px}.awards-toolbar .award-controls{justify-content:center;margin:0}.award-picks.award-thumbnails{justify-content:flex-start;padding:14px 14px 11px;gap:9px}.award-picks.award-thumbnails button{flex-basis:106px;width:106px}.award-picks.award-thumbnails button>img{height:56px}.award-picks.award-thumbnails button>small{font-size:9px}.awards-footnote>p{font-size:10px}}
+
+/* Fixed corner shortcuts, inspired by the reference school's quick links. */
+.floating-quick{position:fixed;right:22px;bottom:26px;z-index:30}
+.floating-links{display:flex;flex-direction:column;gap:9px}
+.floating-links>a{display:flex;align-items:center;gap:10px;min-width:142px;min-height:48px;padding:11px 14px;border:1px solid transparent;border-radius:4px;font-size:13px;font-weight:500;letter-spacing:.03em;box-shadow:0 4px 16px #102f4026;transition:transform .2s,box-shadow .2s}
+.floating-links>a:hover{transform:translateX(-4px);box-shadow:0 6px 20px #102f403b}
+.floating-links .icon{width:21px;height:21px;stroke-width:1.5}
+.floating-freshmen{background:#e5ca91;color:#183d4f}
+.floating-admission{background:#143d50;color:#fff;border-color:#ffffff38!important}
+.floating-services{background:#fff;color:#246879;border-color:#d7e1e3!important}
+.floating-arrow{margin-left:auto;opacity:.7;font-size:13px}
+.floating-toggle{display:none}
+body.modal-open .floating-quick{visibility:hidden}
+@media(max-width:767px){.floating-quick{right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.floating-quick:not(.is-open) .floating-links{display:none}.floating-links{gap:8px;margin-bottom:10px}.floating-links>a{min-width:142px;min-height:46px;font-size:12px;padding:10px 13px}.floating-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-left:auto;padding:11px 14px;min-height:44px;border:1px solid #ffffff4d;border-radius:24px;background:#143d50;color:#fff;font-size:12px;box-shadow:0 4px 18px #102f4033}.floating-toggle .icon{width:16px;height:16px;transform:rotate(45deg);transition:transform .2s}.floating-quick.is-open .floating-toggle .icon{transform:rotate(0)}.floating-links>a:hover{transform:none}}
