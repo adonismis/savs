@@ -1,0 +1,160 @@
+{
+  "source": "https://www.savs.ilc.edu.tw/home",
+  "snapshot_date": "2026-10-25",
+  "posters": [
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/140/764abcf79c9e84c430eb92a8bf68d1f7.jpg",
+      "title": "114專題",
+      "src": "assets/honors/poster-09.jpg",
+      "category": "競賽榮耀",
+      "caption": "115 全國專題實作及創意競賽"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/122/5de7eeceba4aab02f7f828d102183b02.png",
+      "title": "114技藝競賽",
+      "src": "assets/honors/poster-19.png",
+      "category": "競賽榮耀",
+      "caption": "114技藝競賽｜海報 1"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/147/69cdd81755d9dfccc134caf8a222888e.jpg",
+      "title": "全國科展",
+      "src": "assets/honors/poster-03.jpg",
+      "category": "競賽榮耀",
+      "caption": "第66屆全國科展"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/155/a37dd43f26330e3acadede526fbf5252.png",
+      "title": "115家長會長",
+      "src": "assets/honors/poster-01.png",
+      "category": "校園消息",
+      "caption": "115家長會長"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/148/a23bd29139faa10812ff3d0524c38fde.jpg",
+      "title": "115師鐸獎",
+      "src": "assets/honors/poster-02.jpg",
+      "category": "師生表揚",
+      "caption": "115年度教育部師鐸獎"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/150/9e22af7cb86abe1a75749a69caa9efbb.jpg",
+      "title": "114登記分發",
+      "src": "assets/honors/poster-04.jpg",
+      "category": "升學榜單",
+      "caption": "114登記分發"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/149/c5653786fbe31d366511f02daa15aa31.jpg",
+      "title": "115甄選入學",
+      "src": "assets/honors/poster-05.jpg",
+      "category": "升學榜單",
+      "caption": "115甄選入學"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/145/a394550ff2fd59cd77fabf9d11929065.jpg",
+      "title": "115年技優甄審",
+      "src": "assets/honors/poster-06.jpg",
+      "category": "升學榜單",
+      "caption": "115年技優甄審"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/143/7417afba4b12876f646780cbb9af8334.jpg",
+      "title": "114繁星榜單",
+      "src": "assets/honors/poster-07.jpg",
+      "category": "升學榜單",
+      "caption": "114繁星榜單"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/144/bd694894504339632b17dde3defe7525.jpg",
+      "title": "114體育",
+      "src": "assets/honors/poster-08.jpg",
+      "category": "升學榜單",
+      "caption": "114體育"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/139/f5522c4dbab4789abcb519dc08989725.jpg",
+      "title": "全國教育績優人員",
+      "src": "assets/honors/poster-10.jpg",
+      "category": "師生表揚",
+      "caption": "全國教育績優人員"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/134/4ce33684f3bd86c92d26f00df1efc85a.jpg",
+      "title": "114技優保送",
+      "src": "assets/honors/poster-11.jpg",
+      "category": "升學榜單",
+      "caption": "114技優保送"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/135/11f4e87bb485a9c67de9ff776e9b66a2.png",
+      "title": "114漁業科榜單",
+      "src": "assets/honors/poster-12.png",
+      "category": "升學榜單",
+      "caption": "114漁業科榜單"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/133/79aaa0a894c6c749b7e272f8ef15315d.png",
+      "title": "114體育班單獨招生",
+      "src": "assets/honors/poster-13.png",
+      "category": "招生資訊",
+      "caption": "114體育班單獨招生"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/138/b439adc31317e9abbe4c3652c84d9ed9.jpg",
+      "title": "114原住民專班",
+      "src": "assets/honors/poster-14.jpg",
+      "category": "招生資訊",
+      "caption": "114原住民專班"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/136/a04482f36429d2e26c049bb64d8b9b26.jpg",
+      "title": "114體育錄取",
+      "src": "assets/honors/poster-15.jpg",
+      "category": "升學榜單",
+      "caption": "114體育錄取"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/137/80cb3306576c71ece0794bc8f88e34da.jpg",
+      "title": "114體育錄取2",
+      "src": "assets/honors/poster-16.jpg",
+      "category": "升學榜單",
+      "caption": "114體育錄取2"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/131/8507c7995d192d44315c56273aa3e218.jpg",
+      "title": "114特殊選才",
+      "src": "assets/honors/poster-17.jpg",
+      "category": "升學榜單",
+      "caption": "114特殊選才｜海報 1"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/132/293992822675a1b7ef9afc480193c0bb.png",
+      "title": "114特殊選才",
+      "src": "assets/honors/poster-18.png",
+      "category": "升學榜單",
+      "caption": "114特殊選才｜海報 2"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/125/49a8eb1e6fa1d9f9bbf02eda8bb743c6.png",
+      "title": "114技藝競賽",
+      "src": "assets/honors/poster-20.png",
+      "category": "競賽榮耀",
+      "caption": "114技藝競賽｜海報 2"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/124/22640ffe8943f6d4e63f72fa8f896aa7.png",
+      "title": "114技藝競賽",
+      "src": "assets/honors/poster-21.png",
+      "category": "競賽榮耀",
+      "caption": "114技藝競賽｜海報 3"
+    },
+    {
+      "source": "https://www.savs.ilc.edu.tw/ischool/wr/file/13/123/91c37e9bc8a748a7be244cc322403db6.png",
+      "title": "114技藝競賽",
+      "src": "assets/honors/poster-22.png",
+      "category": "競賽榮耀",
+      "caption": "114技藝競賽｜海報 4"
+    }
+  ]
+}

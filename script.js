@@ -128,54 +128,101 @@
   keyboardTabs(newsTabs, activateNews);
   renderNews();
 
-  const base = 'https://www.savs.ilc.edu.tw/ischool/';
-  const services = {
-    students: [
-      ['成績查詢', 'https://savs-ilc.k12ea.gov.tw/SCH_UI/'],
-      ['學習歷程檔案', 'https://epf-mlife.k12ea.gov.tw/Portal.do'],
-      ['校園行事曆', `${base}publish_page/27/?cid=692`],
-      ['學生手冊', `${base}publish_page/4/?cid=62`],
-      ['社團選填', 'https://kcsc.k12ea.gov.tw/#/login'],
-      ['宿舍專區', `${base}publish_page/123/`]
-    ],
-    staff: [
-      ['成績輸入', 'https://savs-ilc.k12ea.gov.tw/SCH_UI/'],
-      ['差勤系統', 'https://pk12.cloudhr.tw/'],
-      ['網路請購', 'https://eipnsh.k12ea.gov.tw/'],
-      ['線上報修', `${base}public/repair/index.php?bid=8`],
-      ['會議紀錄', `${base}publish_page/27/?cid=691`],
-      ['教師在職進修', 'https://www3.inservice.edu.tw/index2-3.aspx']
-    ],
-    families: [
-      ['招生專區', `${base}publish_page/117/`],
-      ['新生專區', `${base}publish_page/115/`],
-      ['完全免試入學', `${base}publish_page/49?cid=1493`],
-      ['入學獎學金', `${base}publish_page/117?cid=2551`],
-      ['交通路線', `${base}publish_page/0?cid=1232`],
-      ['家長會', `${base}publish_page/22`]
-    ]
-  };
-  const serviceTabs = $$('.service-tabs [role="tab"]');
-  function activateService(tab) {
-    if (!tab) return;
-    setTabState(serviceTabs, tab, $('#service-panel'));
-    const links = services[tab.dataset.service];
-    const panel = $('#service-links');
-    panel.replaceChildren();
-    links.forEach(([label, url]) => {
-      const a = document.createElement('a');
-      a.href = url;
-      a.append(textElement('span', '', label), icon());
-      externalLink(a);
-      panel.append(a);
-    });
+  // Complete service directory: source links stay local; searching never sends a query.
+  const serviceGroups = window.SAVS_SERVICE_GROUPS || [];
+  const serviceInput = $('#service-search');
+  const serviceExpanded = new Set();
+  let serviceCategory = 'all';
+  let serviceQuery = '';
+  const serviceTotal = serviceGroups.reduce((sum, group) => sum + group.links.length, 0);
+  function syncServiceExpand() {
+    const details = $$('#service-directory details');
+    const allOpen = details.length > 0 && details.every(detail => detail.open);
+    const button = $('#service-expand-all');
+    button.hidden = !details.length;
+    button.setAttribute('aria-expanded', String(allOpen));
+    button.replaceChildren(document.createTextNode(allOpen ? '全部收合 ' : '全部展開 '), textElement('span', '', allOpen ? '－' : '＋'));
   }
-  serviceTabs.forEach(tab => tab.addEventListener('click', () => activateService(tab)));
-  keyboardTabs(serviceTabs, activateService);
+  function renderServiceDirectory() {
+    const terms = serviceQuery.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const searching = terms.length > 0;
+    $('#service-search-clear').hidden = !serviceQuery;
+    $$('#service-categories button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.category === serviceCategory)));
+    const directory = $('#service-directory');
+    directory.classList.toggle('is-filtered', serviceCategory !== 'all' || searching);
+    let matches = 0;
+    const cards = [];
+    serviceGroups.forEach(group => {
+      if (serviceCategory !== 'all' && group.id !== serviceCategory) return;
+      const entries = group.links.filter(entry => terms.every(term => `${entry.label} ${entry.aliases || ''} ${group.title}`.toLocaleLowerCase().includes(term)));
+      if (!entries.length) return;
+      matches += entries.length;
+      const card = document.createElement('article');
+      card.className = 'service-group';
+      card.setAttribute('aria-labelledby', `service-heading-${group.id}`);
+      const heading = textElement('div', 'service-group-heading', '');
+      const glyph = icon(); $('use', glyph).setAttribute('href', `#i-${group.icon}`);
+      const copy = textElement('div', '', '');
+      const title = textElement('h3', '', group.title); title.id = `service-heading-${group.id}`;
+      copy.append(title, textElement('p', '', group.description));
+      heading.append(glyph, copy, textElement('span', 'service-group-count', String(entries.length).padStart(2, '0')));
+      card.append(heading);
+      function makeLinks(links) {
+        const list = textElement('div', 'directory-links', '');
+        links.forEach(entry => {
+          const a = document.createElement('a'); a.href = entry.url;
+          a.append(textElement('span', '', entry.label), icon()); externalLink(a); list.append(a);
+        });
+        return list;
+      }
+      const showAll = searching || serviceCategory !== 'all';
+      card.append(makeLinks(showAll ? entries : entries.slice(0, 3)));
+      if (!showAll && entries.length > 3) {
+        const details = document.createElement('details');
+        details.open = serviceExpanded.has(group.id);
+        const summary = textElement('summary', '', '');
+        summary.append(textElement('span', '', `查看全部 ${entries.length} 項`), textElement('span', 'service-disclosure', '＋'));
+        details.append(summary, makeLinks(entries.slice(3)));
+        details.addEventListener('toggle', () => {
+          if (details.open) serviceExpanded.add(group.id); else serviceExpanded.delete(group.id);
+          summary.firstElementChild.textContent = details.open ? '收合清單' : `查看全部 ${entries.length} 項`;
+          summary.lastElementChild.textContent = details.open ? '－' : '＋';
+          syncServiceExpand();
+        });
+        card.append(details);
+      }
+      cards.push(card);
+    });
+    directory.replaceChildren(...cards);
+    if (!cards.length) {
+      const empty = textElement('div', 'service-empty', '');
+      empty.append(textElement('h3', '', '找不到相符的服務'), textElement('p', '', '試試「成績」、「獎學金」或「教學」，也可以查看全部分類。'));
+      const reset = textElement('button', '', '清除條件，查看全部');
+      reset.addEventListener('click', () => { serviceCategory = 'all'; serviceQuery = ''; serviceInput.value = ''; renderServiceDirectory(); serviceInput.focus(); });
+      empty.append(reset); directory.append(empty);
+    }
+    $('#service-status').textContent = searching ? `找到 ${matches} 項服務 · 全部 ${serviceTotal} 項` : (serviceCategory === 'all' ? `共 ${serviceTotal} 項服務，依用途分為 ${serviceGroups.length} 類` : `${serviceGroups.find(group => group.id === serviceCategory).title} · ${matches} 項服務`);
+    syncServiceExpand();
+  }
+  [{id:'all',title:'全部服務'}, ...serviceGroups].forEach(group => {
+    const button = textElement('button', '', group.title);
+    button.dataset.category = group.id;
+    button.setAttribute('aria-controls', 'service-directory');
+    button.addEventListener('click', () => { serviceCategory = group.id; renderServiceDirectory(); });
+    $('#service-categories').append(button);
+  });
+  serviceInput.addEventListener('input', () => { serviceCategory = 'all'; serviceQuery = serviceInput.value; renderServiceDirectory(); });
+  $('#service-search-clear').addEventListener('click', () => { serviceQuery = ''; serviceInput.value = ''; renderServiceDirectory(); serviceInput.focus(); });
+  $('#service-expand-all').addEventListener('click', () => {
+    const details = $$('#service-directory details');
+    const open = !details.every(detail => detail.open);
+    details.forEach(detail => { detail.open = open; });
+    syncServiceExpand();
+  });
   $$('[data-audience]').forEach(link => link.addEventListener('click', () => {
-    activateService(serviceTabs.find(tab => tab.dataset.service === link.dataset.audience));
+    serviceCategory = link.dataset.audience; serviceQuery = ''; serviceInput.value = ''; renderServiceDirectory();
   }));
-  activateService(serviceTabs[0]);
+  renderServiceDirectory();
 
   const hero = $('.hero');
   const photos = $$('.hero-photo');
@@ -247,7 +294,11 @@
     awardSlides.forEach((slide, i) => { slide.hidden = i !== currentAward; });
     awardPicks.forEach((pick, i) => pick.setAttribute('aria-current', String(i === currentAward)));
     $('#award-number').textContent = String(currentAward + 1).padStart(2, '0');
-    if (announce) $('#award-status').textContent = `${awardSlides[currentAward].getAttribute('aria-label')}，${$('.award-story>p', awardSlides[currentAward]).textContent}`;
+    $('#award-select').value = String(currentAward);
+    const thumbnails = $('.award-thumbnails');
+    const activePick = awardPicks[currentAward];
+    thumbnails.scrollTo({left:activePick.offsetLeft - (thumbnails.clientWidth - activePick.clientWidth) / 2, behavior:reducedMotion.matches ? 'instant' : 'smooth'});
+    if (announce) $('#award-status').textContent = `${awardSlides[currentAward].getAttribute('aria-label')}，${$('[data-poster]', awardSlides[currentAward]).dataset.posterTitle}`;
   }
   function updateAwardTimer() {
     clearInterval(awardTimer);
@@ -258,9 +309,10 @@
   function manualAward(index) { showAward(index, true); updateAwardTimer(); }
   function syncAwardPause() {
     awardPause.setAttribute('aria-pressed', String(awardsPaused));
-    awardPause.setAttribute('aria-label', awardsPaused ? '播放競賽輪播' : '暫停競賽輪播');
+    awardPause.setAttribute('aria-label', awardsPaused ? '播放榮耀輪播' : '暫停榮耀輪播');
   }
   awardPicks.forEach(pick => pick.addEventListener('click', () => manualAward(Number(pick.dataset.award))));
+  $('#award-select').addEventListener('change', event => manualAward(Number(event.target.value)));
   $('#award-prev').addEventListener('click', () => manualAward(currentAward - 1));
   $('#award-next').addEventListener('click', () => manualAward(currentAward + 1));
   awardPause.addEventListener('click', () => { awardsPaused = !awardsPaused; syncAwardPause(); updateAwardTimer(); });
@@ -429,14 +481,14 @@
   // Search is intentionally local and never submits visitors' queries externally.
   const searchItems = [
     ...news.map(item => ({title:item.title, url:item.url, type:`校園公告 · ${item.date} · ${item.unit}`})),
-    ...Object.entries(services).flatMap(([, entries]) => entries.map(([title, url]) => ({title, url, type:'常用服務'}))),
+    ...serviceGroups.flatMap(group => group.links.map(entry => ({title:entry.label, url:entry.url, type:`校園服務 · ${group.title}`, keywords:entry.aliases || ''}))),
     ...$$('.dropdown a, .department-card, .more-departments a').map(link => ({title:$('h3', link)?.textContent || link.textContent.trim(), url:link.getAttribute('href'), type:'探索蘇海'}))
   ].filter((item, index, all) => all.findIndex(other => other.title === item.title && other.url === item.url) === index);
   function renderSearch(query = '') {
     const result = $('#search-results');
     result.replaceChildren();
     const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    const items = terms.length ? searchItems.filter(item => terms.every(term => `${item.title} ${item.type}`.toLocaleLowerCase().includes(term))).slice(0, 20) : searchItems.filter(item => ['招生專區', '校園行事曆', '學習歷程檔案', '成績查詢'].includes(item.title));
+    const items = terms.length ? searchItems.filter(item => terms.every(term => `${item.title} ${item.type} ${item.keywords || ''}`.toLocaleLowerCase().includes(term))).slice(0, 20) : searchItems.filter(item => ['招生專區', '行事曆', '學習歷程', '成績查詢'].includes(item.title));
     if (!items.length) { result.append(textElement('p', 'search-empty', '找不到相符項目。試試「招生」、「行事曆」或「漁業科」。')); return; }
     items.forEach(item => {
       const a = document.createElement('a');
