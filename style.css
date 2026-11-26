@@ -511,3 +511,15 @@ body{font-size:16px;line-height:1.6}
 .fish-news-row{display:block}
 .fish-news-row time.fish-news-date{display:inline;margin-right:8px}
 .fish-news-row strong{display:inline}
+
+.fish-news .news-title{display:block;overflow-wrap:anywhere}
+.fish-news .news-item{grid-template-columns:58px minmax(0,1fr) 17px;column-gap:8px}
+@media(max-width:767px){.fish-news .news-item{grid-template-columns:52px minmax(0,1fr) 13px;column-gap:7px}}
+.fish-news .section-heading{margin-bottom:8px;padding-bottom:0;border-bottom:0}
+.fish-news #fish-news-panel .news-item:first-child{padding-top:12px}
+@media(max-width:767px){.fish-news .section-heading{margin-bottom:6px}.fish-news #fish-news-panel .news-item:first-child{padding-top:10px}}
+.fish-news .news-item{grid-template-columns:66px minmax(0,1fr) 17px;align-items:start}
+.fish-news-date-column{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.fish-news-date-column .news-meta{margin:0}
+.fish-news-date-column .news-tag{white-space:nowrap;font-size:11px}
+@media(max-width:767px){.fish-news .news-item{grid-template-columns:62px minmax(0,1fr) 13px}}
