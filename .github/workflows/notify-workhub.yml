@@ -1,0 +1,23 @@
+name: Notify WorkHub
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  notify:
+    if: ${{ !github.event.deleted }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify WorkHub of a new commit
+        env:
+          GH_TOKEN: ${{ secrets.WORKHUB_DISPATCH_TOKEN }}
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo '::notice::Set the WORKHUB_DISPATCH_TOKEN repository secret to enable notifications.'
+            exit 0
+          fi
+          gh api --method POST repos/adonismis/WorkHub/dispatches \
+            -f event_type=submodule-push
