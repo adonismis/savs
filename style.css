@@ -242,3 +242,260 @@ dialog{border:0;color:var(--ink);padding:28px;max-height:90svh;box-shadow:0 24px
 .floating-toggle{display:none}
 body.modal-open .floating-quick{visibility:hidden}
 @media(max-width:767px){.floating-quick{right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.floating-quick:not(.is-open) .floating-links{display:none}.floating-links{gap:8px;margin-bottom:10px}.floating-links>a{min-width:142px;min-height:46px;font-size:12px;padding:10px 13px}.floating-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-left:auto;padding:11px 14px;min-height:44px;border:1px solid #ffffff4d;border-radius:24px;background:#143d50;color:#fff;font-size:12px;box-shadow:0 4px 18px #102f4033}.floating-toggle .icon{width:16px;height:16px;transform:rotate(45deg);transition:transform .2s}.floating-quick.is-open .floating-toggle .icon{transform:rotate(0)}.floating-links>a:hover{transform:none}}
+
+/* 閱讀字級：讓導覽、公告與說明在各種螢幕上更清楚。 */
+body{font-size:16px;line-height:1.6}
+.nav-group summary,.nav-link,.nav-admission{font-size:15px}
+.nav-items{gap:clamp(12px,1.6vw,24px)}
+.dropdown a,.audience-links a,.utility-links a{font-size:14px}
+.hero-description,.section-intro,.campus-story>p:not(.eyebrow),.services-heading>p:last-child{font-size:16px}
+.hero-cta,.text-link,.quick-links span,.news-tabs button,.service-tabs button{font-size:15px}
+.news-title,.service-links a,.footer-links>div,.footer-contact>p,.footer-map,.footer-brand>p{font-size:15px}
+.news-meta,.news-tag,.news-bottom,.footer-bottom,.awards-footnote>p{font-size:13px}
+.eyebrow,.school-english,.department-copy small,.quick-links small{font-size:12px}
+.award-selector>span,.award-selector select,.award-picks.award-thumbnails button>small{font-size:13px}
+.award-picks.award-thumbnails button>small{height:auto;min-height:42px}
+.floating-links>a,.floating-toggle{font-size:14px}
+@media(max-width:1023px){.nav-group summary,.nav-link,.nav-admission{font-size:16px}.school-english{font-size:11px}}
+@media(max-width:767px){.school-english{font-size:10px}.hero-description,.section-intro,.campus-story>p:not(.eyebrow),.services-heading>p:last-child{font-size:15px}.quick-links span,.news-tabs button,.service-tabs button,.service-links a{font-size:14px}.news-title{font-size:15px}.footer-links>div,.footer-contact>p,.footer-brand>p{font-size:14px}.department-copy small,.quick-links small{font-size:10px}.award-picks.award-thumbnails button>small{font-size:12px}.floating-links>a,.floating-toggle{font-size:14px}}
+
+/* 漁業科頁面 */
+.fish-hero{height:480px;position:relative;display:flex;align-items:center;overflow:hidden;color:#fff;background:var(--navy)}.fish-hero>img,.fish-hero-shade{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.fish-hero-shade{background:linear-gradient(90deg,#092a3ae8 0%,#092a3a7a 60%,#092a3a22)}.fish-hero-copy{position:relative}.fish-hero h1{font-family:var(--serif);font-size:clamp(36px,4vw,52px);line-height:1.45;letter-spacing:.08em}.fish-hero-copy>p:not(.eyebrow){font-size:15px;line-height:1.9;margin-top:18px}.fish-quick{display:grid;grid-template-columns:repeat(4,1fr);background:white}.fish-quick a{padding:25px 20px;border-right:1px solid var(--line);display:flex;justify-content:center;align-items:center;gap:15px}.fish-quick a:first-child{border-left:1px solid var(--line)}.fish-quick a:hover{color:var(--teal)}.fish-quick small{color:#7d9298;letter-spacing:.12em;font-size:10px}.fish-updates{display:grid;grid-template-columns:1.6fr 1fr;gap:70px}.fish-news-row{display:grid;grid-template-columns:90px 1fr auto;gap:15px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);line-height:1.6}.fish-news-row span:first-child{font-size:12px;color:var(--teal)}.fish-news-row strong{font-size:15px;font-weight:500}.fish-news-row:hover strong{color:var(--teal)}.fish-note{font-size:12px;color:#63727b;margin:14px 0}.fish-highlight{background:var(--paper);padding:28px}.fish-highlight h2{margin-bottom:20px}.fish-highlight img{width:100%;height:170px;object-fit:contain;background:#fff}.fish-highlight p:not(.eyebrow){font-size:14px;line-height:1.8;margin:17px 0}.fish-explore{background:var(--paper)}.fish-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.fish-cards a{background:#fff;padding:28px;min-height:175px;border-bottom:2px solid #d3dedf}.fish-cards a:hover{border-color:var(--teal)}.fish-cards small{color:var(--teal);letter-spacing:.14em;font-size:11px}.fish-cards h3{font-family:var(--serif);font-size:23px;margin:14px 0 10px}.fish-cards p{color:#63727b;font-size:14px;line-height:1.8}@media(max-width:1023px){#fishery-nav.is-open{display:flex}}@media(max-width:767px){.fish-hero{height:400px}.fish-hero h1{font-size:34px}.fish-quick{grid-template-columns:repeat(2,1fr)}.fish-quick a{padding:18px 10px;border-bottom:1px solid var(--line)}.fish-updates{grid-template-columns:1fr;gap:35px}.fish-news-row{grid-template-columns:70px 1fr auto;gap:8px}.fish-news-row strong{font-size:14px}.fish-cards{grid-template-columns:1fr;gap:14px}.fish-cards a{min-height:0}.fish-explore .section-heading{display:block}.fish-explore .section-intro{margin-top:12px}}
+/* Department page layout */
+.fish-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:42px;padding-top:38px;padding-bottom:70px;align-items:start}.fish-sidebar{border:1px solid #e0e8e8;background:#fff}.fish-sidebar-heading{background:var(--navy);color:#fff;padding:27px 23px}.fish-sidebar-heading small{font-size:9px;letter-spacing:.13em;color:#c8ae7c}.fish-sidebar-heading h2{font-size:26px;margin:8px 0}.fish-sidebar-heading p{font-size:12px;color:#c5d6dc}.fish-side-menu summary{display:none}.fish-side-menu nav{padding:8px 16px 16px}.fish-side-menu nav a{display:block;border-bottom:1px solid #e8eeee;padding:13px 10px;font-size:14px;color:#405c67}.fish-side-menu nav a:hover,.fish-side-menu nav a.current{color:var(--teal);background:#eff6f5}.fish-side-menu nav a.current{border-left:3px solid #b89c64;font-weight:700}.fish-content{min-width:0}.fish-content .wrap{width:100%}.fish-breadcrumb{font-size:12px;color:#788b92;display:flex;gap:10px;align-items:center;margin-bottom:20px}.fish-breadcrumb strong{color:var(--navy)}.fish-content .fish-hero{height:400px}.fish-content .fish-hero-copy{width:calc(100% - 64px)}.fish-content .fish-updates{gap:38px}.fish-content .fish-explore .wrap{width:calc(100% - 56px)}.fish-back{font-size:13px;color:var(--navy)}@media(max-width:1023px){.fish-school-nav{display:none}.fish-layout{grid-template-columns:190px minmax(0,1fr);gap:24px}.fish-content .fish-updates{grid-template-columns:1fr}}@media(max-width:767px){.fish-layout{display:block;padding-top:20px}.fish-sidebar{margin-bottom:24px}.fish-sidebar-heading{padding:18px 20px}.fish-sidebar-heading h2{font-size:22px}.fish-sidebar-heading p{display:none}.fish-side-menu summary{display:block;padding:13px 20px;color:var(--navy);font-size:14px;font-weight:600;cursor:pointer}.fish-side-menu summary::after{content:'＋';float:right}.fish-side-menu[open] summary::after{content:'－'}.fish-side-menu nav{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}.fish-content .fish-hero{height:370px}.fish-content .fish-hero-copy{width:calc(100% - 40px)}.fish-content .fish-explore .wrap{width:calc(100% - 40px)}}
+/* Prominent department banner */
+.fish-content .fish-hero{height:460px;border-radius:3px;box-shadow:0 12px 28px #143d501c}.fish-hero>img{object-position:center 48%}.fish-hero-shade{background:linear-gradient(90deg,rgba(9,42,58,.91),rgba(9,42,58,.38) 65%,rgba(9,42,58,.12))}.fish-hero-copy .eyebrow{color:#d7c294}.fish-hero-copy h1{font-size:clamp(36px,4vw,52px)}@media(max-width:767px){.fish-content .fish-hero{height:380px}.fish-hero-copy h1{font-size:34px}}
+/* 漁業科內文與側欄字級 */
+.fish-side-menu nav a,.fish-side-menu summary,.fish-quick b{font-size:16px}
+.fish-hero-copy>p:not(.eyebrow),.fish-news-row strong,.fish-highlight p:not(.eyebrow),.fish-cards p{font-size:16px}
+.fish-note,.fish-breadcrumb,.fish-sidebar-heading p,.fish-news-row span:first-child,.fish-quick small,.fish-cards small{font-size:14px}
+.fish-sidebar-heading small{font-size:11px}
+@media(max-width:767px){.fish-news-row{grid-template-columns:76px 1fr auto}.fish-news-row strong,.fish-side-menu nav a{font-size:15px}.fish-sidebar-heading small{font-size:11px}}
+
+/* 無橫幅時，讓內容與側欄自然銜接 */
+.fish-layout{padding-top:40px;padding-bottom:64px}
+.fish-breadcrumb{margin:0 0 26px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.fish-content .fish-updates{padding-top:0;padding-bottom:48px;align-items:start}
+.fish-news .section-heading{margin-bottom:18px}
+.fish-news .fish-note:first-of-type{margin:0 0 8px}
+.fish-news-row{padding-block:17px}
+.fish-highlight{padding:26px}
+.fish-explore.section-space{padding:36px 0}
+.fish-content .fish-explore .wrap{width:calc(100% - 56px)}
+.fish-explore .section-heading{margin-bottom:22px}
+.fish-cards{gap:16px}
+.fish-cards a{padding:22px;min-height:0}
+@media(max-width:1023px){.fish-content .fish-updates{gap:32px}.fish-highlight{max-width:none}}
+@media(max-width:767px){.fish-layout{padding-top:20px;padding-bottom:40px}.fish-sidebar{margin-bottom:24px}.fish-breadcrumb{margin-bottom:22px;padding-bottom:12px}.fish-content .fish-updates{padding-bottom:32px;gap:26px}.fish-news .section-heading{align-items:flex-start;flex-wrap:wrap;gap:8px}.fish-news-row{padding-block:15px}.fish-explore.section-space{padding:28px 0}.fish-content .fish-explore .wrap{width:calc(100% - 36px)}.fish-explore .section-heading{margin-bottom:18px}.fish-cards{gap:12px}}
+
+
+/* 漁業科頁首圖形橫幅 */
+.fish-page-banner{position:relative;overflow:hidden;background:#123e52;color:#fff;isolation:isolate}
+.fish-page-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,#102f42 0%,#184e60 65%,#246578 100%);z-index:-2}
+.fish-page-banner::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(120deg,transparent 0 46px,#ffffff08 47px 48px);z-index:-1}
+.fish-banner-inner{min-height:190px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-block:32px}
+.fish-banner-inner p{color:#d8c499;font-size:12px;letter-spacing:.2em;font-weight:600}
+.fish-banner-inner h1{font-family:var(--serif);font-size:42px;letter-spacing:.14em;margin:8px 0 12px}
+.fish-banner-rule{width:48px;height:3px;background:#c8aa70}
+.fish-banner-art{position:absolute;right:-6%;bottom:-95px;width:55%;height:240px;transform:rotate(-8deg);opacity:.8;pointer-events:none}
+.fish-banner-art span{position:absolute;inset:0;border:1px solid #a5d0d66b;border-radius:50%}
+.fish-banner-art span:nth-child(2){inset:18px -15px -18px 15px;border-color:#d8bd8b8c}
+.fish-banner-art span:nth-child(3){inset:36px -30px -36px 30px;border-color:#a5d0d63d}
+@media(max-width:767px){.fish-banner-inner{min-height:145px;padding-block:25px}.fish-banner-inner h1{font-size:32px}.fish-banner-inner p{font-size:11px}.fish-banner-art{width:70%;right:-22%;bottom:-125px}}
+
+/* 漁業科照片橫幅 */
+.fish-page-banner{background:#123e52 url('assets/department-fishery.webp') center 50% / cover no-repeat}
+.fish-page-banner::before{background:linear-gradient(90deg,rgba(10,39,53,.78),rgba(10,39,53,.12));z-index:-1}
+.fish-page-banner::after{display:none}
+.fish-banner-inner{min-height:250px}
+@media(max-width:767px){.fish-banner-inner{min-height:180px}}
+.fish-banner-inner .fish-banner-tagline{margin-top:14px;color:#f1f5f5;font-size:15px;font-weight:400;letter-spacing:.08em}
+.fish-banner-caption{position:absolute;right:max(30px,calc((100% - 1280px)/2));bottom:18px;color:#fff;font-size:12px;letter-spacing:.05em;text-shadow:0 1px 5px #000b}
+@media(max-width:767px){.fish-banner-inner .fish-banner-tagline{font-size:14px}.fish-banner-caption{right:20px;bottom:10px;font-size:11px}}
+
+/* 漁業科社群連結 */
+.fish-social{border-top:1px solid var(--line);padding:20px 20px 22px}
+.fish-social p{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px}
+.fish-social-links{display:flex;flex-wrap:wrap;gap:10px}
+.fish-social-links a{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--navy)}
+.fish-social-links a:hover{color:var(--teal)}
+.fish-social-icon{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#e9f1f2;color:var(--navy);font-family:Arial,sans-serif;font-weight:bold;font-size:17px}
+.fish-ig-icon{font-size:20px;font-weight:400}
+.fish-social small{display:block;margin-top:10px;font-size:12px;color:#63727b;line-height:1.5}
+.fish-sidebar-heading .fish-social{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;padding:16px 0 0;border-top:1px solid #ffffff40}
+.fish-sidebar-heading .fish-social a{display:inline-flex;align-items:center;gap:6px;color:#fff;font-size:13px;line-height:1.4}
+.fish-sidebar-heading .fish-social a:hover{color:#e0c68f}
+.fish-sidebar-heading .fish-social svg{width:21px;height:21px;flex-shrink:0;stroke-width:1.8}
+@media(max-width:767px){.fish-sidebar-heading .fish-social{margin-top:12px;padding-top:12px}}
+
+/* 精簡漁業科側欄標題區 */
+.fish-sidebar-heading{padding:18px 20px}
+.fish-sidebar-heading h2{font-size:23px;margin:3px 0}
+.fish-sidebar-heading p{font-size:13px;line-height:1.5}
+.fish-sidebar-heading .fish-social{margin-top:10px;padding-top:10px;gap:14px}
+.fish-sidebar-heading .fish-social a{font-size:12px}
+.fish-sidebar-heading .fish-social svg{width:18px;height:18px}
+@media(max-width:767px){.fish-sidebar-heading{padding:14px 18px}.fish-sidebar-heading h2{font-size:21px}.fish-sidebar-heading .fish-social{margin-top:8px;padding-top:8px}}
+.fish-sidebar-heading{padding:12px 16px}
+.fish-sidebar-heading h2{font-size:20px;margin:1px 0}
+.fish-sidebar-heading p{font-size:12px;line-height:1.4}
+.fish-sidebar-heading .fish-social{margin-top:6px;padding-top:6px;gap:12px}
+.fish-sidebar-heading .fish-social svg{width:16px;height:16px}
+@media(max-width:767px){.fish-sidebar-heading{padding:10px 16px}.fish-sidebar-heading h2{font-size:20px}.fish-sidebar-heading .fish-social{margin-top:6px;padding-top:6px}}
+.fish-sidebar-heading{padding:14px 16px;background:#153f51}
+.fish-sidebar-heading h2{margin:0;color:#fff;letter-spacing:.08em}
+.fish-sidebar-heading .fish-social{border-color:#ffffff33}
+.fish-sidebar-heading .fish-social a{color:#e3eef0}
+.fish-video{border-top:1px solid #d8e3e3;margin-top:24px;padding-top:22px}
+.fish-video .eyebrow{margin-bottom:4px}
+.fish-video h3{font-family:var(--serif);font-size:21px;margin-bottom:14px}
+.fish-video-frame{aspect-ratio:16/9;background:var(--navy);overflow:hidden}
+.fish-video-frame iframe{width:100%;height:100%;border:0}
+.fish-video>a{display:inline-block;margin-top:10px;color:var(--teal);font-size:14px}
+.fish-video{border-top:0;margin-top:0;padding-top:0;border-bottom:1px solid #d8e3e3;margin-bottom:22px;padding-bottom:22px}
+.fish-video{border-bottom:0;margin-bottom:0;padding-bottom:0;border-top:1px solid #d8e3e3;margin-top:24px;padding-top:22px}
+.fish-gallery{border-top:1px solid var(--line);padding-top:36px}
+.fish-gallery .section-heading{margin-bottom:12px}
+.fish-gallery-note{font-size:13px;color:var(--muted);margin-bottom:20px}
+.fish-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fish-gallery-grid a{background:var(--paper);overflow:hidden}
+.fish-gallery-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .25s}
+.fish-gallery-grid a:hover img{transform:scale(1.03)}
+.fish-gallery-grid span{display:block;padding:12px 14px;font-size:14px}
+@media(max-width:767px){.fish-gallery{padding-top:28px}.fish-gallery .section-heading{align-items:flex-start;flex-wrap:wrap;gap:8px}.fish-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+@media(max-width:374px){.fish-gallery-grid{grid-template-columns:1fr}}
+
+/* 漁業之光內容間距 */
+.fish-highlight>.eyebrow{margin-bottom:4px}
+.fish-highlight>h2{margin-bottom:12px}
+.fish-highlight>img{height:auto;max-height:140px;object-fit:contain}
+.fish-highlight>p:not(.eyebrow){margin:10px 0;line-height:1.6}
+
+/* 桌面版科內選單隨頁面捲動 */
+@media(min-width:768px){
+  .fish-sidebar{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto}
+}
+@media(min-width:768px){
+  .fish-sidebar{top:min(20px, calc(100vh - var(--fish-sidebar-height, 100vh) - 20px));max-height:none;overflow:visible}
+}
+.fish-honor-carousel{background:#fff}
+.fish-honor-carousel img{width:100%;height:190px;object-fit:contain}
+.fish-honor-carousel img[hidden]{display:none}
+.fish-honor-controls{display:flex;align-items:center;justify-content:center;gap:20px;padding:8px;color:var(--navy);font-size:14px}
+.fish-honor-controls button{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;font-size:24px;line-height:1}
+.fish-honor-controls button:hover{background:var(--navy);color:white}
+.fish-honor-carousel img{cursor:zoom-in}
+.fish-image-dialog>img{width:auto;max-width:100%;max-height:75svh;margin:auto;object-fit:contain}
+.fish-honor-progress{height:4px;background:#dce7e7;overflow:hidden}
+.fish-honor-progress span{display:block;width:100%;height:100%;background:#b79a61;transform:scaleX(0);transform-origin:left}
+.fish-honor-controls [data-honor-pause]{font-size:14px}
+
+/* 漁業之光展示 */
+.fish-highlight{background:#f1f6f5;border:1px solid #dce8e6;padding:24px}
+.fish-highlight>.eyebrow{color:#397c83;letter-spacing:.13em;margin-bottom:5px}
+.fish-highlight>h2{font-size:27px;margin-bottom:16px}
+.fish-honor-carousel{background:#fff;border:1px solid #dbe5e4;box-shadow:0 4px 16px #173c4910}
+.fish-honor-carousel img{height:220px;padding:12px;background:#fff;object-fit:contain}
+.fish-honor-progress{height:3px;background:#e4eceb}
+.fish-honor-controls{justify-content:flex-end;gap:10px;padding:10px 12px}
+.fish-honor-controls [data-honor-count]{margin-right:auto;color:#5d777c;font-size:13px;letter-spacing:.05em}
+.fish-honor-controls button{width:32px;height:32px;background:#f2f6f5;border:1px solid #dce7e5;color:var(--navy);font-size:22px}
+.fish-honor-controls button:focus-visible{outline-offset:2px}
+.fish-highlight>p:not(.eyebrow){color:#526d73;font-size:15px;line-height:1.7;margin:14px 0 10px}
+.fish-highlight>.text-link{font-size:14px;color:#1c6d77;font-weight:600}
+@media(max-width:767px){.fish-highlight{padding:20px}.fish-honor-carousel img{height:210px}}
+
+/* 漁業之光色彩 */
+.fish-highlight{background:#eaf2f3;border-color:#d0e1e2}
+.fish-honor-carousel{background:#f8fbfb;border-color:#d1e0e1}
+.fish-honor-carousel img{background:#f8fbfb}
+.fish-honor-controls{background:#fff}
+.fish-honor-progress{background:#d8e7e7}
+.fish-honor-progress span{background:#c2a26a}
+.fish-video{border-color:#cbdedf}
+
+/* 漁業科活動相簿 */
+.fish-gallery{padding-top:40px}
+.fish-gallery .section-heading{margin-bottom:22px}
+.fish-gallery-grid{gap:20px}
+.fish-gallery-grid a{display:flex;flex-direction:column;background:#fff;border:1px solid #dce7e6;box-shadow:0 3px 12px #173c490b;transition:box-shadow .2s,transform .2s}
+.fish-gallery-grid a:hover{transform:translateY(-3px);box-shadow:0 8px 20px #173c491c}
+.fish-gallery-grid img{aspect-ratio:4/3;object-fit:cover;background:#e8f0f0}
+.fish-gallery-grid span{flex:1;display:flex;align-items:center;min-height:64px;padding:14px 16px;font-size:15px;font-weight:600;line-height:1.5;color:var(--navy)}
+@media(max-width:767px){.fish-gallery{padding-top:30px}.fish-gallery-grid{gap:12px}.fish-gallery-grid span{min-height:60px;padding:12px;font-size:14px}}
+.fish-gallery-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fish-gallery-grid span{min-height:58px;padding:10px 12px;font-size:14px}
+@media(max-width:767px){.fish-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+@media(max-width:374px){.fish-gallery-grid{grid-template-columns:1fr}}
+.fish-ticker{display:flex;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);color:#a32626}
+.fish-ticker strong{flex:none;font-size:14px;padding:3px 9px;background:#faeeee;border-radius:3px}
+.fish-ticker-window{overflow:hidden;flex:1;min-width:0}
+.fish-ticker-text{width:max-content;animation:fish-ticker-scroll 16s linear infinite}
+.fish-ticker-text a{font-size:15px;color:#ad2424}
+.fish-ticker-pause{flex:none;color:#6c7e83;font-size:13px;padding:6px}
+.fish-ticker:hover .fish-ticker-text,.fish-ticker:focus-within .fish-ticker-text,.fish-ticker.is-paused .fish-ticker-text{animation-play-state:paused}
+@keyframes fish-ticker-scroll{from{transform:translateX(min(60vw,500px))}to{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){.fish-ticker-text{animation:none}.fish-ticker-pause{display:none}}
+@media(max-width:767px){.fish-ticker{gap:8px}.fish-ticker-text a{font-size:14px}}
+.fish-content .fish-breadcrumb{margin-bottom:0}
+.fish-content .fish-ticker{margin-bottom:26px}
+.fish-content-top{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.fish-content-top .fish-breadcrumb{border:0;padding:0;margin:0}
+.fish-content-top .fish-social{display:flex;align-items:center;gap:14px;padding:0;border:0}
+.fish-content-top .fish-social a{display:inline-flex;align-items:center;gap:6px;color:var(--navy);font-size:13px}
+.fish-content-top .fish-social a:hover{color:var(--teal)}
+.fish-content-top .fish-social svg{width:20px;height:20px;flex-shrink:0;stroke-width:1.8}
+@media(max-width:480px){.fish-content-top{flex-wrap:wrap;gap:10px}.fish-content-top .fish-social{margin-left:auto}}
+.fish-news .fish-ticker{margin-bottom:22px}
+
+/* 漁業科內容標題 */
+.fish-content .fish-news .section-heading h2,
+.fish-content .fish-gallery .section-heading h2,
+.fish-content .fish-highlight > h2{
+  font-size:24px;
+  line-height:1.35;
+  letter-spacing:.06em;
+  color:#123e52;
+}
+.fish-content .fish-news .section-heading h2::before,
+.fish-content .fish-gallery .section-heading h2::before,
+.fish-content .fish-highlight > h2::before{
+  content:"";
+  display:inline-block;
+  width:4px;
+  height:1em;
+  margin-right:10px;
+  vertical-align:-.08em;
+  background:#bd9a5d;
+}
+.fish-content .fish-news .section-heading .eyebrow,
+.fish-content .fish-gallery .section-heading .eyebrow,
+.fish-content .fish-highlight > .eyebrow{
+  font-size:11px;
+  margin-bottom:5px;
+  color:#397b82;
+}
+@media(max-width:767px){
+  .fish-content .fish-news .section-heading h2,
+  .fish-content .fish-gallery .section-heading h2,
+  .fish-content .fish-highlight > h2{font-size:22px}
+}
+.fish-news .section-heading{margin-bottom:12px}
+.fish-news .section-heading + .fish-news-row{border-top:1px solid var(--line)}
+@media(max-width:767px){.fish-news .section-heading{margin-bottom:10px}}
+.fish-news-more{display:flex;justify-content:flex-end;margin-top:12px}
+.fish-news-more a{color:var(--teal);font-weight:600}
+.fish-news-row{grid-template-columns:88px 76px minmax(0,1fr) auto;gap:10px;padding:15px 0}
+.fish-news-row .fish-news-date{font-size:13px;color:#71858b;white-space:nowrap}
+.fish-news-row span:nth-child(2){font-size:12px;color:#286b77;background:#e9f3f3;border-radius:3px;padding:4px 6px;text-align:center;white-space:nowrap}
+.fish-news-row strong{font-size:14px;line-height:1.6}
+@media(max-width:767px){.fish-news-row{grid-template-columns:76px 70px minmax(0,1fr) auto;gap:6px}.fish-news-row .fish-news-date{font-size:12px}.fish-news-row strong{font-size:14px}}
+@media(max-width:374px){.fish-news-row{grid-template-columns:72px 68px minmax(0,1fr);gap:6px}.fish-news-row>span:last-child{display:none}}
+.fish-news-row time.fish-news-date{font-size:13px;color:#71858b;white-space:nowrap}
+@media(max-width:767px){.fish-news-row time.fish-news-date{font-size:12px}}
+.fish-news-row{grid-template-columns:100px minmax(0,1fr);gap:16px;align-items:start;padding:14px 0}
+.fish-news-row strong{font-size:14px;font-weight:500;line-height:1.7}
+.fish-news-row time.fish-news-date{font-size:13px;line-height:1.85;color:#667e86}
+@media(max-width:767px){.fish-news-row{grid-template-columns:88px minmax(0,1fr);gap:10px}.fish-news-row time.fish-news-date{font-size:12px}}
+.fish-news-row{grid-template-columns:90px minmax(0,1fr);gap:8px}
+@media(max-width:767px){.fish-news-row{grid-template-columns:82px minmax(0,1fr);gap:6px}}

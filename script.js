@@ -60,6 +60,148 @@
     else if (navigation.classList.contains('is-open')) { closeMenu(); menuButton.focus(); }
   });
 
+  const serviceGroups = window.SAVS_SERVICE_GROUPS || [];
+  const ticker = $('.fish-ticker');
+  if (ticker) {
+    const button = $('.fish-ticker-pause', ticker);
+    button.addEventListener('click', () => {
+      const paused = button.getAttribute('aria-pressed') !== 'true';
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? '播放' : '暫停';
+      ticker.classList.toggle('is-paused', paused);
+    });
+  }
+  const fishHonors = $('.fish-honor-carousel');
+  if (fishHonors) {
+    const slides = $$('img', fishHonors);
+    let current = 0;
+    function showHonor(offset) {
+      slides[current].hidden = true;
+      current = (current + offset + slides.length) % slides.length;
+      slides[current].hidden = false;
+      $('[data-honor-count]', fishHonors).textContent = `${current + 1} / ${slides.length}`;
+    }
+    const imageDialog = $('#fish-image-dialog');
+    slides.forEach(slide => {
+      slide.tabIndex = 0;
+      slide.setAttribute('role', 'button');
+      slide.setAttribute('aria-label', `放大${slide.alt}`);
+      const openImage = () => {
+        $('#fish-image-large').src = slide.src;
+        $('#fish-image-large').alt = slide.alt;
+        $('#fish-image-caption').textContent = slide.alt;
+        openDialog(imageDialog);
+      };
+      slide.addEventListener('click', openImage);
+      slide.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openImage();
+        }
+      });
+    });
+    const progress = $('.fish-honor-progress span', fishHonors);
+    const pauseButton = $('[data-honor-pause]', fishHonors);
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = reducedMotion.matches;
+    let elapsed = 0;
+    let previousTime = 0;
+    function updatePauseButton() {
+      pauseButton.setAttribute('aria-pressed', String(paused));
+      pauseButton.setAttribute('aria-label', paused ? '播放自動輪播' : '暫停自動輪播');
+      pauseButton.textContent = paused ? '▶' : 'Ⅱ';
+    }
+    function tick(time) {
+      if (previousTime && !paused && !document.hidden && !imageDialog.open && !fishHonors.matches(':hover') && !fishHonors.contains(document.activeElement)) {
+        elapsed += time - previousTime;
+        if (elapsed >= 6000) {
+          showHonor(1);
+          elapsed = 0;
+        }
+      }
+      previousTime = time;
+      progress.style.transform = `scaleX(${Math.min(elapsed / 6000, 1)})`;
+      requestAnimationFrame(tick);
+    }
+    pauseButton.addEventListener('click', () => { paused = !paused; updatePauseButton(); });
+    $('[data-honor-prev]', fishHonors).addEventListener('click', () => { showHonor(-1); elapsed = 0; });
+    $('[data-honor-next]', fishHonors).addEventListener('click', () => { showHonor(1); elapsed = 0; });
+    updatePauseButton();
+    requestAnimationFrame(tick);
+  }
+
+  const sidebar = $('.fish-sidebar');
+  if (sidebar) {
+    const updateSidebarHeight = () => {
+      sidebar.style.setProperty('--fish-sidebar-height', `${sidebar.offsetHeight}px`);
+    };
+    updateSidebarHeight();
+    if ('ResizeObserver' in window) new ResizeObserver(updateSidebarHeight).observe(sidebar);
+    else window.addEventListener('resize', updateSidebarHeight);
+  }
+
+  const isHomepage = Boolean($('#department-track'));
+  function syncSlides() {
+    if (isHomepage) {
+      updateTimer();
+      updateAwardTimer();
+    }
+  }
+  // Native dialogs supply focus trapping, Escape handling and focus restoration.
+  const searchDialog = $('#search-dialog');
+  const imageDialog = $('#image-dialog');
+  const videoDialog = $('#video-dialog');
+  function openDialog(dialog) {
+    dialog.showModal();
+    document.body.classList.add('modal-open');
+    syncSlides();
+  }
+  $$('dialog').forEach(dialog => {
+    $('.dialog-close', dialog).addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      if (dialog === videoDialog) $('#video-player').replaceChildren();
+      syncSlides();
+    });
+    dialog.addEventListener('click', event => {
+      const bounds = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+    });
+  });
+  // Search is intentionally local and never submits visitors' queries externally.
+  const searchItems = [
+    ...news.map(item => ({title:item.title, url:item.url, type:`校園公告 · ${item.date} · ${item.unit}`})),
+    ...serviceGroups.flatMap(group => group.links.map(entry => ({title:entry.label, url:entry.url, type:`校園服務 · ${group.title}`, keywords:entry.aliases || ''}))),
+    ...$$('.dropdown a, .department-card, .more-departments a, .fish-side-menu nav a').map(link => ({title:$('h3', link)?.textContent || link.textContent.trim(), url:link.getAttribute('href'), type:'探索蘇海'}))
+  ].filter((item, index, all) => all.findIndex(other => other.title === item.title && other.url === item.url) === index);
+  function renderSearch(query = '') {
+    const result = $('#search-results');
+    result.replaceChildren();
+    const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const items = terms.length ? searchItems.filter(item => terms.every(term => `${item.title} ${item.type} ${item.keywords || ''}`.toLocaleLowerCase().includes(term))).slice(0, 20) : searchItems.filter(item => ['招生專區', '行事曆', '學習歷程', '成績查詢'].includes(item.title));
+    if (!items.length) { result.append(textElement('p', 'search-empty', '找不到相符項目。試試「招生」、「行事曆」或「漁業科」。')); return; }
+    items.forEach(item => {
+      const a = document.createElement('a');
+      a.href = item.url;
+      const text = document.createElement('span');
+      text.append(textElement('small', '', item.type), document.createTextNode(item.title));
+      a.append(text, icon());
+      externalLink(a);
+      a.addEventListener('click', () => searchDialog.close());
+      result.append(a);
+    });
+  }
+  $$('.search-toggle').forEach(button => button.addEventListener('click', () => {
+    $('#site-search').value = '';
+    renderSearch();
+    openDialog(searchDialog);
+    $('#site-search').focus();
+  }));
+  $('#site-search').addEventListener('input', event => renderSearch(event.target.value));
+  $$('a').forEach(externalLink);
+
+  if (!isHomepage) return;
+
   // Shared, keyboard-accessible tab behaviour.
   function setTabState(tabs, selected, panel) {
     tabs.forEach(tab => {
@@ -129,10 +271,10 @@
   renderNews();
 
   // Complete service directory: source links stay local; searching never sends a query.
-  const serviceGroups = window.SAVS_SERVICE_GROUPS || [];
   const serviceInput = $('#service-search');
   const serviceExpanded = new Set();
-  let serviceCategory = 'all';
+  const audience = new URLSearchParams(location.search).get('audience');
+  let serviceCategory = serviceGroups.some(group => group.id === audience) ? audience : 'all';
   let serviceQuery = '';
   const serviceTotal = serviceGroups.reduce((sum, group) => sum + group.links.length, 0);
   function syncServiceExpand() {
@@ -405,29 +547,6 @@
   $('#department-toolbar').hidden = false;
   syncDepartments();
 
-  // Native dialogs supply focus trapping, Escape handling and focus restoration.
-  const searchDialog = $('#search-dialog');
-  const imageDialog = $('#image-dialog');
-  const videoDialog = $('#video-dialog');
-  function openDialog(dialog) {
-    dialog.showModal();
-    document.body.classList.add('modal-open');
-    updateTimer();
-    updateAwardTimer();
-  }
-  $$('dialog').forEach(dialog => {
-    $('.dialog-close', dialog).addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => {
-      document.body.classList.remove('modal-open');
-      if (dialog === videoDialog) $('#video-player').replaceChildren();
-      updateTimer();
-      updateAwardTimer();
-    });
-    dialog.addEventListener('click', event => {
-      const bounds = dialog.getBoundingClientRect();
-      if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
-    });
-  });
   $$('[data-poster]').forEach(button => button.addEventListener('click', () => {
     $('#dialog-image').src = button.dataset.poster;
     $('#dialog-image').alt = button.dataset.posterTitle;
@@ -507,35 +626,4 @@
   }));
   if (!albums.length) $('#activity-grid').append(textElement('p', 'search-empty', '精彩活動陸續整理中，敬請期待。'));
 
-  // Search is intentionally local and never submits visitors' queries externally.
-  const searchItems = [
-    ...news.map(item => ({title:item.title, url:item.url, type:`校園公告 · ${item.date} · ${item.unit}`})),
-    ...serviceGroups.flatMap(group => group.links.map(entry => ({title:entry.label, url:entry.url, type:`校園服務 · ${group.title}`, keywords:entry.aliases || ''}))),
-    ...$$('.dropdown a, .department-card, .more-departments a').map(link => ({title:$('h3', link)?.textContent || link.textContent.trim(), url:link.getAttribute('href'), type:'探索蘇海'}))
-  ].filter((item, index, all) => all.findIndex(other => other.title === item.title && other.url === item.url) === index);
-  function renderSearch(query = '') {
-    const result = $('#search-results');
-    result.replaceChildren();
-    const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    const items = terms.length ? searchItems.filter(item => terms.every(term => `${item.title} ${item.type} ${item.keywords || ''}`.toLocaleLowerCase().includes(term))).slice(0, 20) : searchItems.filter(item => ['招生專區', '行事曆', '學習歷程', '成績查詢'].includes(item.title));
-    if (!items.length) { result.append(textElement('p', 'search-empty', '找不到相符項目。試試「招生」、「行事曆」或「漁業科」。')); return; }
-    items.forEach(item => {
-      const a = document.createElement('a');
-      a.href = item.url;
-      const text = document.createElement('span');
-      text.append(textElement('small', '', item.type), document.createTextNode(item.title));
-      a.append(text, icon());
-      externalLink(a);
-      a.addEventListener('click', () => searchDialog.close());
-      result.append(a);
-    });
-  }
-  $$('.search-toggle').forEach(button => button.addEventListener('click', () => {
-    $('#site-search').value = '';
-    renderSearch();
-    openDialog(searchDialog);
-    $('#site-search').focus();
-  }));
-  $('#site-search').addEventListener('input', event => renderSearch(event.target.value));
-  $$('a').forEach(externalLink);
 })();
